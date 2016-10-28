@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AJAX First</title>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('button').click(function(){
+          var username=$('input').val();
+          $('input').val('');
+          $.ajax({
+            url:`https://api.github.com/users/${username}`,
+            data: 'json',
+            success: function(response){
+              $('.userBox').append(`<img src="${response.avatar_url}" alt="" />`);
+              $.ajax({
+                url: response.repos_url,
+                data: 'json',
+                success: function(response2){
+                  console.log(response2)
+                  $('.userBox').append(`<p>Number of Repositories: ${response2.length}</p>`)
+                }
+              })
+            }
+          })
+        })
+      });
+    </script>
+  </head>
+  <body>
+    <input type="text" name="name" value="">
+    <button type="submit" name="button">Add User</button>
+    <div class="userBox">
+    </div><!-- userBox end -->
+    <!-- avatar_url repos_url-->
+  </body>
+</html>
